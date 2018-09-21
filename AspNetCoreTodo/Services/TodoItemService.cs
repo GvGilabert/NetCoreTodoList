@@ -23,7 +23,6 @@ namespace AspNetCoreTodo.Services
             _context.Items.Add(newItem);
             var saveResult = await _context.SaveChangesAsync(); 
             return saveResult == 1;
-            
         }
     }
 }
