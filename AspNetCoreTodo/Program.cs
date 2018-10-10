@@ -15,7 +15,6 @@ namespace AspNetCoreTodo
     {
         public static void Main(string[] args)
         {
-            // CreateWebHostBuilder(args).Build().Run();
             var host = CreateWebHostBuilder(args).Build();
             InitializeDatabase(host);
             host.Run();
@@ -26,7 +25,10 @@ namespace AspNetCoreTodo
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                try { SeedData.InitializeAsync(services).Wait(); }
+                try 
+                { 
+                    SeedData.InitializeAsync(services).Wait(); 
+                }
 
                 catch (Exception ex) 
                 { 
