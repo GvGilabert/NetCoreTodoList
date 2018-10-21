@@ -1,0 +1,36 @@
+@model TodoViewModel
+
+<div class="panel panel-default todo-panel">
+    <h2 class="panel-heading">Lugares para visitar en las próximas 24hs<b> @DateTime.Now</b>
+    </h2>
+  <table class="table table-hover">
+      <thead>
+          <tr>
+              <td>&#x2714;</td>
+              <td>Item
+               </td>
+              <td>Due 
+            </td>
+              <td>Address
+              </td>
+          </tr>
+      </thead>
+
+      @foreach (var item in Model.Items)
+      {
+          <tr>
+              <td>				
+                  <form	asp-action="../Todo/MarkDone" method="POST">								
+                      <input type="checkbox" class="done-checkbox">								
+                      <input type="hidden" name="id" value="@item.Id">				
+                    </form> 
+                </td>
+
+              <td>@item.Title</td>
+              <td>@item.DueAt</td>
+              <td>@item.Address</td>
+          </tr>
+      }
+  </table>
+  <img src=@Model.Map>
+</div>

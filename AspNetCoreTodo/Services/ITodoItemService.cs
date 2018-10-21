@@ -7,10 +7,11 @@ namespace AspNetCoreTodo.Services
 {
     public interface ITodoItemService
     {
-        Task<TodoItem[]> GetIncompleteItemsAsync(ApplicationUser user);
+        Task<TodoItem[]> GetIncompleteItemsAsync(ApplicationUser user, TodoQueries query);
+        Task<TodoItem[]> GetIncompleteItemsWithDateAsync(ApplicationUser user, DateTimeOffset date);
         Task<bool> AddItemAsync(TodoItem newItem, ApplicationUser user);
-
         Task<bool> MarkDoneAsync(Guid id, ApplicationUser user);
+ 
     }
 
     

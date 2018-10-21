@@ -1,18 +1,28 @@
 @model TodoViewModel
 @using Humanizer
 @{
-    ViewData["Title"] = "Manage your todo list";
+    ViewData["User"] =@Model.Me;
 }
 
 <div class="panel panel-default todo-panel">
-  <div class="panel-heading">@ViewData["Title"]</div>
-
+    <h2 class="panel-heading">Bienvenido <b>@ViewData["User"]</b>
+    </h2>
   <table class="table table-hover">
       <thead>
           <tr>
               <td>&#x2714;</td>
-              <td>Item</td>
-              <td>Due</td>
+              <td>Item
+                <a href=@Url.Action("Index","Todo", new { sortQuery ="IncompleteByTitleAsc"}) class="sorter-btn">&#8595;</a>
+                <a href=@Url.Action("Index","Todo", new { sortQuery ="IncompleteByTitleDesc"}) class="sorter-btn">&#8593;</a>
+              </td>
+              <td>Due 
+                <a href=@Url.Action("Index","Todo", new { sortQuery ="IncompleteByDateAsc"}) class="sorter-btn">&#8595;</a>
+                <a href=@Url.Action("Index","Todo", new { sortQuery ="IncompleteByDateDesc"}) class="sorter-btn">&#8593;</a>
+                </td>
+              <td>Address
+                <a href=@Url.Action("Index","Todo", new { sortQuery ="IncompleteByAddressAsc"}) class="sorter-btn">&#8595;</a>
+                <a href=@Url.Action("Index","Todo", new { sortQuery ="IncompleteByAddressDesc"}) class="sorter-btn">&#8593;</a>
+              </td>
           </tr>
       </thead>
 
@@ -20,19 +30,20 @@
       {
           <tr>
               <td>				
-                  <form	asp-action="MarkDone"	method="POST">								
-                      <input	type="checkbox"	class="done-checkbox">								
-                      <input	type="hidden"	name="id"	value="@item.Id">				
+                  <form	asp-action="MarkDone" method="POST">								
+                      <input type="checkbox" class="done-checkbox">								
+                      <input type="hidden" name="id" value="@item.Id">				
                     </form> 
                 </td>
 
               <td>@item.Title</td>
-              <td>@item.DueAt.Humanize() desde ahora</td>
+              <td>@item.DueAt.Humanize()</td>
+              <td>@item.Address</td>
           </tr>
       }
   </table>
-
   <div class="panel-footer add-item-form">
-    	@await	Html.PartialAsync("AddItemPartial",	new	TodoItem()) 
+    	@await	Html.PartialAsync("AddItemPartial",	new	TodoItem())
   </div>
 </div>
+

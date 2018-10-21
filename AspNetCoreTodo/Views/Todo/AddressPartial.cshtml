@@ -1,0 +1,29 @@
+@model AddressViewModel
+
+<table class="table table-hover">
+      <thead>
+          <tr>
+              <td>&#x2714;</td>
+              <td>Dirección</td>
+              <td>Mapa</td>
+          </tr>
+          @if(ViewBag.addressBag.info !=null)
+          {
+            foreach (var item in ViewBag.addressBag.info.results)
+            {
+                foreach  (var itemTwo in item.locations)
+                {
+                <tr>
+                    <td>
+                        <input type="radio" name="Adrs" class="radioAdrs">
+                    </td>
+                    <td>@itemTwo.street @itemTwo.adminArea5 - @itemTwo.adminArea1</td>
+                    <td>
+                        <img src=@itemTwo.mapUrl>
+                        <input type="hidden" id="latLng" value=@itemTwo.latLng.lat.ToString(),@itemTwo.latLng.lng.ToString()>
+                    </td>
+                </tr>
+                }
+            }
+          }
+    </thead>

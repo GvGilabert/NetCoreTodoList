@@ -23,8 +23,6 @@ namespace AspNetCoreTodo
         {
             Configuration = configuration;
         }
-
-     
       
         public IConfiguration Configuration { get; }
 
@@ -39,15 +37,14 @@ namespace AspNetCoreTodo
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(
-                Configuration.GetConnectionString("DefaultConnection")));
-                services.AddIdentity<ApplicationUser, IdentityRole>()
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders().AddDefaultUI();
  
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddScoped<ITodoItemService, TodoItemService>();
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,7 +70,7 @@ namespace AspNetCoreTodo
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Todo}/{action=Index}/{id?}");
             });
         }
     }

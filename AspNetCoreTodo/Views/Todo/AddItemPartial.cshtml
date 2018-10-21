@@ -1,7 +1,39 @@
 @model TodoItem
-
-<form asp-action="AddItem" method="POST">
-    <label asp-for="Title">Add a new item</label>
-    <input asp-for="Title">
-    <button type="submit">Add</button>
+<form class="form-vertical" asp-action="AddItem" method="POST" id='formAddTodo'>
+  <div class="form-group">
+    <h4>Agregar una nueva tarea</h4>
+    <label asp-for="Title">Title:</label>
+    <input asp-for="Title" class="form-control" required>
+    <label asp-for="DueAt">Fecha de visita</label>
+    <input asp-for="DueAt" type="datetime-local" class="form-control">  
+    <label asp-for="Address">Dirección: </label>
+    <input id="addressStr" placeholder="Calle" class="form-control">
+    <input id="addressN" placeholder="Altura" class="form-control">
+    <input id="addressArea" placeholder="Localidad" class="form-control">
+    <input asp-for="Address"type="hidden" id="addressEntered">
+    <input type="hidden" asp-for="LatLong" id="LatLongEntered">
+  </div>
 </form>
+<button type="button" onclick="AddressPartial()" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal" id="openPopUp">
+Agregar tarea
+</button>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Seleccione la dirección correcta</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       
+  </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">cerrar</button>
+        <button type="button" class="btn btn-primary" id="addTodoBtn">Salvar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
