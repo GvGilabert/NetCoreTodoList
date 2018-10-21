@@ -29,7 +29,7 @@ namespace AspNetCoreTodo.IntegrationTests
 
 
             Assert.Equal(
-                "http://localhost:8888/Account" +
+                "http://localhost:8888/Identity/Account" +
                 "/Login?ReturnUrl=%2Ftodo",
                 response.Headers.Location.ToString());
         }
