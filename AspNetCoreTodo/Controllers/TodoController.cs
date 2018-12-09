@@ -7,6 +7,7 @@ using AspNetCoreTodo.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace AspNetCoreTodo.Controllers
 {
@@ -15,23 +16,34 @@ namespace AspNetCoreTodo.Controllers
     {
         private readonly ITodoItemService _todoItemService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IConfiguration Configuration;
 
-        public TodoController(ITodoItemService todoItemService, UserManager <ApplicationUser> userManager)
+        public TodoController(ITodoItemService todoItemService, UserManager <ApplicationUser> userManager, IConfiguration config)
         {
             _todoItemService = todoItemService;
             _userManager = userManager;
+            Configuration = config;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortQuery)
         {
+            if(ViewBag.addressBag ==null)
+                {
+                    ViewBag.addressBag = new AddressViewModel();
+                }  
             var currentUser = await _userManager.GetUserAsync(User);
             if(currentUser==null) return Challenge();
-
-            var items = await _todoItemService.GetIncompleteItemsAsync(currentUser);
+            
+            if(sortQuery ==null)
+                sortQuery= "IncompleteByTitleAsc";
+            TodoQueries query = (TodoQueries)Enum.Parse(typeof(TodoQueries) ,sortQuery);
+            
+            var items = await _todoItemService.GetIncompleteItemsAsync(currentUser, query);
 
             var model = new TodoViewModel()
             {
-                Items = items
+                Items = items,
+                Me = currentUser.UserName
             };
 
             return View(model);
@@ -39,6 +51,7 @@ namespace AspNetCoreTodo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddItem(TodoItem newItem)
         {
+
             if (!ModelState.IsValid) 
             { 
                 return RedirectToAction("Index"); 
@@ -70,6 +83,25 @@ namespace AspNetCoreTodo.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public async Task <IActionResult> AddressPartial(string address)
+        {
+            if(address==null)
+                return BadRequest("Address field is empty");
+            
+            AddressViewModel model = new AddressViewModel();
+            GetMapInfo map = new GetMapInfo(Configuration);
+            model.info = await map.CallApiAsync(address);
+            ViewBag.addressBag = model;
+            return PartialView ("AddressPartial");
+        }
+
+        
+        
+        
+        
+
+        
 
 
 
